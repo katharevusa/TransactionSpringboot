@@ -2,13 +2,17 @@ package com.transaction.springboottransaction.models;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.Set;
+
 @Entity
 @Table(name = "category")
 public class Category {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	
 	@Column(unique=true)
 	private @NotNull String name;
@@ -16,6 +20,10 @@ public class Category {
 	private @NotNull String description;
 
 	private @NotNull String image;
+	
+	@OneToMany(mappedBy = "category", fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL)
+	Set<Product> products;
 	
 	public Category() {
 		
@@ -27,11 +35,19 @@ public class Category {
 		this.image = image;
 	}
 
-	public Integer getId() {
+	public Set<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Set<Product> products) {
+		this.products = products;
+	}
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
